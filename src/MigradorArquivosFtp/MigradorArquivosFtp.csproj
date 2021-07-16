@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MigradorArquivosFtp.Infra.Repository\MigradorArquivosFtp.Infra.Repository.csproj" />
+    <ProjectReference Include="..\MigradorArquivosFtp.Infra.Services\MigradorArquivosFtp.Infra.Services.csproj" />
   </ItemGroup>
 
   <ItemGroup>
