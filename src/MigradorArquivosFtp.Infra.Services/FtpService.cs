@@ -47,10 +47,8 @@ namespace MigradorArquivosFtp.Infra.Services
             ftpRequest.Method = Ftp.UploadFile;
             ftpRequest.Credentials = new NetworkCredential(FtpUser, FtpPassword);
 
-            using (System.IO.Stream requestStream = ftpRequest.GetRequestStream())
-            {
-                stream.CopyTo(requestStream);
-            }
+            using System.IO.Stream requestStream = ftpRequest.GetRequestStream();
+            stream.CopyTo(requestStream);
 
         }
 
@@ -65,10 +63,41 @@ namespace MigradorArquivosFtp.Infra.Services
             ftpRequest.Method = Ftp.DeleteFile;
             ftpRequest.Credentials = new NetworkCredential(FtpUser, FtpPassword);
 
-            using (FtpWebResponse response = (FtpWebResponse)ftpRequest.GetResponse())
+            using FtpWebResponse response = (FtpWebResponse)ftpRequest.GetResponse();
+            return response.StatusDescription;
+        }
+
+        public bool IsFileExist(string path)
+        {
+            var source = FtpUrlBase + path;
+
+            FtpWebRequest ftpRequest = (FtpWebRequest)WebRequest.Create(source);
+            ftpRequest.UseBinary = true;
+            ftpRequest.UsePassive = true;
+            ftpRequest.KeepAlive = true;
+            ftpRequest.Method = Ftp.GetDateTimestamp;
+            ftpRequest.Credentials = new NetworkCredential(FtpUser, FtpPassword);
+            try
             {
-                return response.StatusDescription;
+                using FtpWebResponse response = (FtpWebResponse)ftpRequest.GetResponse();
+                return true;
+                
             }
+            catch (WebException e)
+            {
+                FtpWebResponse response = (FtpWebResponse)e.Response;
+                if (response.StatusCode ==
+                    FtpStatusCode.ActionNotTakenFileUnavailable)
+                {
+                    return false;
+                }
+                throw;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            
         }
     }
 }

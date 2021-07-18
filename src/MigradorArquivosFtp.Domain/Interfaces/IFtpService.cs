@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.IO;
 
 namespace MigradorArquivosFtp.Domain.Interfaces
 {
@@ -12,5 +7,6 @@ namespace MigradorArquivosFtp.Domain.Interfaces
         Stream DownloadFileStream(string source);
         void UploadFileStream(Stream stream, string dest);
         string Remove(string source);
+        bool IsFileExist(string path);
     }
 }
