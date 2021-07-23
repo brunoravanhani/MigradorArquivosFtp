@@ -50,9 +50,23 @@ namespace MigradorArquivosFtp
     
         static void Run(IServiceProvider serviceProvider)
         {
-            var verificador = serviceProvider.GetService<IVerificadorRunner>();
+            Console.WriteLine(@"
+1 - Verificador
+2 - Deletador
+3 - Migrador");
+            Console.Write("Digite o código da opção desejada:");
+            string op = Console.ReadLine();
 
-            verificador.Run();
+            int option = int.Parse(op);
+            IRunner runner = option switch
+            {
+                1 => serviceProvider.GetService<IVerificadorRunner>(),
+                2 => serviceProvider.GetService<IDeletadorRunner>(),
+                3 => serviceProvider.GetService<IMigradorRunner>(),
+                _ => throw new Exception("Opção não encontrada"),
+            };
+            runner.Run();
+            Environment.Exit(1);
         }
     }
 }

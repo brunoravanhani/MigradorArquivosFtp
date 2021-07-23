@@ -42,7 +42,7 @@ namespace MigradorArquivosFtp.Runners
                     Console.WriteLine($"Failed: {path} - Erro: {e.Message}");
                 }
 
-
+                // System.Threading.Thread.Sleep(300);
             }
         }
 
